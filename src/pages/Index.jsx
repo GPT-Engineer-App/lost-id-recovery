@@ -42,9 +42,20 @@ const Index = () => {
 
   const handleSearch = async () => {
     try {
-      const response = await fetch(`/api/lostIds/${searchIdNumber}`);
+      const response = await fetch(`/api/lostIds?idNumber=${searchIdNumber}`);
       const data = await response.json();
-      setSearchResult(data.name);
+      if (data) {
+        setSearchResult(data.name);
+      } else {
+        setSearchResult(null);
+        toast({
+          title: "Not Found",
+          description: "No matching ID found in the database.",
+          status: "warning",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
     } catch (error) {
       console.error("Error searching for ID:", error);
     }
